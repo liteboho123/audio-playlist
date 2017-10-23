@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8"/>
+<title>playlist</title>
+
+<style type="text/css">
+.trackbar{
+background:#DDD;
+height:50px;
+font-family:Ariel, Helvitica, Sans-serif;
+
+}
+
+.trackbar:nth-child(even){
+background:#EEE;
+}
+
+.playbutton{
+opacity:0.8;
+display:block;
+float:left;
+Width:19px;
+height:22px;
+margin:14px 0px 0px 14px;
+background:url(FB_IMG_14891907541888257.jpg) no-repeat;
+border: none;
+cursor:pointer;
+outline:none;
+
+}
+
+.playbutton:hover{
+opacity:1;
+}
+
+.trackname{
+float:left;
+color:#000;
+margin:12px 0px 0px 14px;
+font-size:20px;
+font-weight:bold;
+
+}
+
+
+</style>
+
+<script type="text/javascript">
+
+function _(id){
+
+return document.getElementById(id);
+};
+
+function audioApp(){
+
+var audio = new Audio();
+var audio_folder = "";
+var audio_ext = ".mp3";
+var audio_index = 1;
+var is_playing = false;
+var playbtnArray;
+var playingtrack;
+var trackbox = _("trackbox");
+var tracks = {
+"track1": ["Fast Lane", "9th_wonder_loyalty_instrumental_mp3_26096"], //1st object in the array is the title of the song displayed in the page
+"track2": ["Breathe", "9th_wonder_slippin_instrumental_mp3_25774"], //2nd object in the array is the file name of the song located with the PC system
+"track3": ["Stranglehold", "9th_wonder_slow_down_instrumental_mp3_26780"]
+};
+
+for(var track in tracks){
+
+var tb = document.createElement("div");
+var pb = document.createElement("button");
+var tn = document.createElement("div");
+tb.className = "trackbar";
+pb.className = "playbutton";
+tn.className = "trackname";
+tn.innerHTML = audio_index + ". " + tracks[track][0];
+pb.id = tracks[track][1];
+pb.addEventListener("click", switchTrack);
+tb.appendChild(pb); 
+tb.appendChild(tn);
+trackbox.appendChild(tb);
+audio_index++;
+}
+
+audio.addEventListener("ended", function(){
+_(playingtrack).style.background = "url(FB_IMG_14891907541888257.jpg)";
+playingtrack = "";
+});
+
+function switchTrack(event){
+
+if(is_playing){
+
+if(playingtrack != event.target.id){
+
+is_playing = true;
+_(playingtrack).style.background = "url(FB_IMG_14891907541888257.jpg)";
+event.target.style.background = "url(bh.png)";
+audio.src = audio_folder + event.target.id + audio_ext;
+audio.play();
+}else{
+
+audio.pause();
+is_playing = false;
+event.target.style.background = "url(FB_IMG_14891907541888257.jpg)";
+}
+}else{
+is_playing = true;
+event.target.style.background = "url(bh.png)";
+if(playingtrack != event.target.id){
+audio.src = audio_folder+event.target.id+audio_ext;
+}
+audio.play();
+
+}
+
+playingtrack = event.target.id;
+
+};
+
+
+}
+window.addEventListener("load", audioApp);
+
+</script>
+
+</head>
+
+<body>
+
+<div id="trackbox">
+
+
+</div>
+
+</body>
+</html>
